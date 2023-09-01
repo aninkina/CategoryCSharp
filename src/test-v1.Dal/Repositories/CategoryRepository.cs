@@ -31,7 +31,7 @@ public class CategoryRepository : ICategoryRepository
                 parameters: new { model.Name, model.ParentId, model.Id }));
     }
 
-    public async Task<CategoryModel> GetById(int id, CancellationToken cancellationToken = default)
+    public async Task<CategoryModel?> GetById(int id, CancellationToken cancellationToken = default)
     {
         var connection = _context.CreateConnection();
 
@@ -43,7 +43,7 @@ public class CategoryRepository : ICategoryRepository
                 cancellationToken: cancellationToken,
                 parameters: new { id }));
 
-        return result.ToCategoryModel();
+        return result?.ToCategoryModel();
     }
 
     public async Task<CategoryDetailedModel> GetChildrenById(int id, CancellationToken cancellationToken = default)

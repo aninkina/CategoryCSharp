@@ -1,4 +1,6 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using test_v1.Api.Extensions;
 using test_v1.Api.Requests;
 using test_v1.Api.Responses;
@@ -11,16 +13,21 @@ namespace test_v1.Api.Controllers;
 [Route("api/[controller]")]
 public sealed class CategoryController
 {
-    private readonly ILogger<CategoryController> _logger;
+    private IValidator<CreateCategoryRequest> _createCategoryValidator;
+
+    private IValidator<UpdateCategoryRequest> _updateCategoryValidator;
 
     private readonly CategoryService _service;
 
     private readonly CategoryQueryService _queryService;
 
 
-    public CategoryController(ILogger<CategoryController> logger, CategoryService service, CategoryQueryService queryService)
+    public CategoryController(IValidator<CreateCategoryRequest> createCategoryValidator,
+        IValidator<UpdateCategoryRequest> updateCategoryValidator,
+        CategoryService service, CategoryQueryService queryService)
     {
-        _logger = logger;
+        _createCategoryValidator = createCategoryValidator;
+        _updateCategoryValidator = updateCategoryValidator;
         _service = service;
         _queryService = queryService;
     }
@@ -28,12 +35,26 @@ public sealed class CategoryController
     [HttpPost("Create")]
     public Task<BaseApiResponse> Create([FromBody] CreateCategoryRequest request, CancellationToken cancellationToken = default)
     {
+        var result = _createCategoryValidator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            throw new ValidationException("Request is not valid");
+        }
+
         return _service.Create(request.ToCategoryModel(), cancellationToken);
     }
 
     [HttpPost("Update")]
     public Task<BaseApiResponse> Update([FromBody] UpdateCategoryRequest request, CancellationToken cancellationToken = default)
     {
+        var result = _updateCategoryValidator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            throw new ValidationException("Request is not valid");
+        }
+
         return _service.Update(request.ToCategoryModel(), cancellationToken);
     }
 

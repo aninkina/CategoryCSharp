@@ -43,6 +43,13 @@ public sealed class CategoryService
             return BaseApiResponse.Error("Parent doesn't exist");
         }
 
+        var result = await _repository.GetChildrenById(model.Id, cancellationToken);
+
+        if (result != null && result.CategoryList.Select(x => x.ParentId = model.ParentId).Any())
+        {
+            return BaseApiResponse.Error("Cycled relationship is forbidden. Category has child with requested parent id");
+        }
+
         var updatedId = await _repository.Update(model, cancellationToken);
 
         return BaseApiResponse.Success($"Id = {updatedId}");

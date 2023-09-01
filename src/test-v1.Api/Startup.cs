@@ -1,12 +1,15 @@
-﻿using FluentMigrator.Runner;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
+using test_v1.Dal;
 using test_v1.Api.Middlewaries;
 using test_v1.Bll.Repositories;
 using test_v1.Bll.Services;
-using test_v1.Dal;
 using test_v1.Dal.Extensions;
 using test_v1.Dal.Repositories;
 using test_v1.Dal.Settings;
+using FluentValidation;
+using System;
+using test_v1.Api.Requests;
+using test_v1.Api.Validators;
 
 namespace test_v1.Api;
 
@@ -32,6 +35,8 @@ public sealed class Startup
         services.AddScoped<CategoryService>();
         services.AddScoped<CategoryQueryService>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IValidator<CreateCategoryRequest>, CreateCategoryValidator>();
+        services.AddScoped<IValidator<UpdateCategoryRequest>, UpdateCategoryValidator>();
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();

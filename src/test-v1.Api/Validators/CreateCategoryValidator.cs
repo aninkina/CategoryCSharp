@@ -22,7 +22,7 @@ internal sealed class CreateCategoryValidator : AbstractValidator<CreateCategory
 
         RuleFor(x => x.ParentId)
             .NotNull()
-            .GreaterThan(ConfigurationConsts.CategoryRootId - 1)
+            .GreaterThan(ConfigurationConsts.CategoryRootId + 1)
             .LessThan(Int32.MaxValue);
     }
 }

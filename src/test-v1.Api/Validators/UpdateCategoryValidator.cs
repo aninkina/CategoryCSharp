@@ -20,7 +20,7 @@ internal sealed class UpdateCategoryValidator : AbstractValidator<UpdateCategory
 
         RuleFor(x => x.ParentId)
             .NotNull()
-            .GreaterThan(ConfigurationConsts.CategoryRootId - 1)
+            .GreaterThan(ConfigurationConsts.CategoryRootId + 1)
             .LessThan(Int32.MaxValue);
 
         RuleFor(x => x.ParentId).NotEqual(x => x.Id).WithMessage("ParentId must be different from Id");

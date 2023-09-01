@@ -1,0 +1,41 @@
+version: "3.4"
+
+networks:
+    dev:
+        driver: bridge
+
+services:
+    category_service:
+        image: ${REGISTRY:-service-category}/test-v1.api:${PLATFORM-linux}-${TAG:-latest}
+        depends_on:
+            - "category_db"
+        container_name: category_service
+        ports:
+            - "5000:80"
+        build:
+            context: ./src
+            dockerfile: test-v1.Api/Dockerfile
+        environment:
+            - "DbConnectionOptions_ConnectionString=host=category_db;port=5432;database=postgres;username=postgres;password=ooff4422;Pooling=true;"
+            - category_data:/var/lib/postgresql/data
+        networks:
+            - dev
+
+
+    category_db:
+        image: postgres:latest
+        restart: always
+        container_name: category_db
+        environment:
+            POSTGRES_USER: "postgres"
+            POSTGRES_DB: "postgres"
+            POSTGRES_PASSWORD: "ooff4422"
+        ports:
+            - "5432:5432"
+        volumes:
+            - category_data:/var/lib/postgresql/data
+        networks:
+            - dev
+
+volumes:
+  category_data:

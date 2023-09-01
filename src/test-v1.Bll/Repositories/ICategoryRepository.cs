@@ -8,7 +8,7 @@ public interface ICategoryRepository
 
     Task<int> Update(CategoryModel model, CancellationToken cancellationToken = default);
 
-    Task<CategoryModel> GetById(int id, CancellationToken cancellationToken = default);
+    Task<CategoryModel?> GetById(int id, CancellationToken cancellationToken = default);
 
     Task<CategoryDetailedModel> GetChildrenById(int id, CancellationToken cancellationToken = default);
 }
