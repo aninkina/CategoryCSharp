@@ -54,11 +54,10 @@ public sealed class Startup
     {
         app.MigrateUp();
 
-        if (env.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
 
         app.UseHttpsRedirection();
 

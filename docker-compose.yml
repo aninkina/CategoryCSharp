@@ -31,7 +31,7 @@ services:
             POSTGRES_DB: "postgres"
             POSTGRES_PASSWORD: "ooff4422"
         ports:
-            - "5432:5432"
+            - "5400:5432"
         volumes:
             - category_data:/var/lib/postgresql/data
         networks:
