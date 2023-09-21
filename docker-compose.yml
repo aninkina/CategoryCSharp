@@ -16,7 +16,6 @@ services:
             context: ./src
             dockerfile: test-v1.Api/Dockerfile
         environment:
-            - "DbConnectionOptions_ConnectionString=host=category_db;port=5432;database=postgres;username=postgres;password=ooff4422;Pooling=true;"
             - category_data:/var/lib/postgresql/data
         networks:
             - dev
